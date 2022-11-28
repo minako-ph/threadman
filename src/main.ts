@@ -339,6 +339,10 @@ export const doPost = (e: any) => {
       return ContentService.createTextOutput('不正なコマンドです')
     }
 
+    /** ===========================
+     *  絵文字の登録
+     =========================== */
+
     // 不正値
     if (input[0] === 'add' && input.length !== 2) {
       return ContentService.createTextOutput(
@@ -365,10 +369,14 @@ export const doPost = (e: any) => {
       return ContentService.createTextOutput(``)
     }
 
+    /** ===========================
+     *  絵文字の削除
+     =========================== */
+
     // 不正値
-    if (input[0] === 'add' && input.length !== 1) {
+    if (input[0] === 'remove' && input.length !== 2) {
       return ContentService.createTextOutput(
-        '不正な入力です。removeは絵文字を指定することができません'
+        '不正な入力です。removeの後にスペースを空けて、転送を中止したい絵文字を入力してください'
       )
     }
 
@@ -377,9 +385,15 @@ export const doPost = (e: any) => {
       // TODO: user_idを指定して検索できない為 名前で検索
       const userName = _getUserInfo(user_id).user.profile.display_name
 
+      const emoji = input[1]
+      if (!emoji.match(/:[^"]+:/)) {
+        return ContentService.createTextOutput(`不正な絵文字です`)
+      }
+
       const result = _searchMessage(
-        `「@${userName}」が を押したメッセージを転送します from:@threadman`
+        `「@${userName}」が「${emoji}」を押したメッセージを転送します from:@threadman`
       )
+
       const messages = result.messages.matches
       console.log(`📣: messages`)
       console.log(messages)
