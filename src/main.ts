@@ -446,10 +446,10 @@ export const doPost = (e: any) => {
     console.log(`📣: payload`)
     console.log(payload)
 
-    // ボタンを押されたメッセージを更新
+    // ボタンを押されたメッセージを削除
     const chanelId = payload.container.channel_id
     const ts = payload.container.message_ts
-    _updateMessage(chanelId, ts, `DONE✨`, [])
+    _deleteMessage(chanelId, ts)
     return
 
     // 開発中：元のメッセージをスレッドに残す
